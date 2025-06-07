@@ -11,7 +11,7 @@ export const authConfig = {
   ],
 };
 
-// 👇 Export a function called auth that returns the current session
+// Export a function called auth that returns the current session
 export async function auth() {
   return await getServerSession(authConfig);
 }
