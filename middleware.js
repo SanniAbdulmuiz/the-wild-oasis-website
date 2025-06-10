@@ -1,5 +1,6 @@
 // middleware.ts
 import { withAuth } from "next-auth/middleware";
+import { createGuest, getGuest } from "./app/_library/data-service";
 
 export default withAuth({
   callbacks: {
@@ -16,6 +17,7 @@ export const config = {
   matcher: ["/account"], // protect this route
 };
 
+//Jonas's version
 // import { auth } from "@/app/_library/auth";
 // export const middleware = auth;
 
