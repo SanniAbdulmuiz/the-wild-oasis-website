@@ -1,4 +1,5 @@
 "use server"; //Jonas used this server component to handle form actions in the signIn and signOut button but I later did it on the client because it didn't work for me.. so it was no longer needed.
+import { revalidatePath } from "next/cache";
 import { auth, signIn } from "./auth";
 import { supabase } from "./supabase";
 export async function signInAction() {
@@ -24,5 +25,5 @@ export async function updateGuest(formData) {
 
   if (error) throw new Error("Guest could not be updated");
 
-  return data;
+  revalidatePath("/account/profile");
 }
