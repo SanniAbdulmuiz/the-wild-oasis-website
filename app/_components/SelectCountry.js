@@ -1,16 +1,19 @@
-import { getCountries } from "@/app/_library/data-service";
+"use client";
 
-async function SelectCountry({ defaultCountry, name, id, className }) {
-  const countries = await getCountries();
-  const flag =
-    countries.find((country) => country.name === defaultCountry)?.flag ?? "";
-
+function SelectCountry({
+  countries,
+  selectedValue,
+  onChange,
+  name,
+  id,
+  className,
+}) {
   return (
     <select
       name={name}
       id={id}
-      // Here we use a trick to encode BOTH the country name and the flag into the value. Then we split them up again later in the server action
-      defaultValue={`${defaultCountry}%${flag}`}
+      value={selectedValue}
+      onChange={onChange}
       className={className}
     >
       <option value="">Select country...</option>
@@ -25,33 +28,20 @@ async function SelectCountry({ defaultCountry, name, id, className }) {
 
 export default SelectCountry;
 
-// "use client";
+// import { getCountries } from "@/app/_library/data-service";
 
-// import { useState, useEffect } from "react";
-
-// export default function SelectCountry({
-//   countries,
-//   name,
-//   id,
-//   className,
-//   onCountryChange,
-// }) {
-//   const [selected, setSelected] = useState("");
-
-//   useEffect(() => {
-//     if (selected) {
-//       const [, flag] = selected.split("%");
-//       onCountryChange?.(flag);
-//     }
-//   }, [selected, onCountryChange]);
+// async function SelectCountry({ defaultCountry, name, id, className }) {
+//   const countries = await getCountries();
+//   const flag =
+//     countries.find((country) => country.name === defaultCountry)?.flag ?? "";
 
 //   return (
 //     <select
 //       name={name}
 //       id={id}
+//       // Here we use a trick to encode BOTH the country name and the flag into the value. Then we split them up again later in the server action
+//       defaultValue={`${defaultCountry}%${flag}`}
 //       className={className}
-//       onChange={(e) => setSelected(e.target.value)}
-//       defaultValue=""
 //     >
 //       <option value="">Select country...</option>
 //       {countries.map((c) => (
@@ -62,3 +52,5 @@ export default SelectCountry;
 //     </select>
 //   );
 // }
+
+// export default SelectCountry;
