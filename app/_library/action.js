@@ -5,8 +5,28 @@ import { supabase } from "./supabase";
 import { getBookings } from "./data-service";
 import { redirect } from "next/navigation";
 
-export async function signInAction() {
-  await signIn("google", { redirectTo: "/account" }); //Was signing In but wasn't redirecting, so I had to use a client component
+export async function createReservation(bookingData, formData) {
+  const session = await auth();
+  if (!session) throw new Error("You must be logged in");
+
+  const newBooking = {
+    ...bookingData,
+    guestId: session.user.guestId,
+    numGuests: Number(formData.get("numGuests")),
+    observations: formData.get("observations").slice(0, 1000),
+    extrasPrice: 0,
+    totalPrice: bookingData.cabinPrice,
+    isPaid: false,
+    hasBreakfast: false,
+    status: "unconfirmed",
+  };
+
+  const { error } = await supabase.from("bookings").insert([newBooking]);
+
+  if (error) throw new Error("Booking could not be created");
+
+  revalidatePath(`/cabins/${bookingData.cabinId}`);
+  redirect("/cabins/thankyou");
 }
 
 export async function updateReservation(formData) {
@@ -43,6 +63,31 @@ export async function updateReservation(formData) {
   redirect("/account/reservations");
 }
 
+export async function deleteReservation(bookingId) {
+  //FOR TESTING
+  //await new Promise((res) => setTimeout(res, 2000));
+  //throw new Error();
+
+  const session = await auth();
+  if (!session) throw new Error("You must be logged in");
+
+  const guestBookings = await getBookings(session.user.guestId);
+  const guestBookingIds = guestBookings.map((bookings) => bookingId);
+
+  if (!guestBookingIds.includes(bookingId))
+    throw new Error(
+      "You are not allowed to delete these bookings, fuck you.🙂"
+    );
+
+  const { error } = await supabase
+    .from("bookings")
+    .delete()
+    .eq("id", bookingId);
+
+  if (error) throw new Error("Booking could not be deleted");
+  revalidatePath("/account/reservations");
+}
+
 export async function updateGuest(formData) {
   const session = await auth();
   if (!session) throw new Error("You must be logged in");
@@ -65,27 +110,6 @@ export async function updateGuest(formData) {
   revalidatePath("/account/profile");
 }
 
-export async function deleteReservation(bookingId) {
-  //FOR TESTING
-  await new Promise((res) => setTimeout(res, 2000));
-  //throw new Error();
-
-  const session = await auth();
-  if (!session) throw new Error("You must be logged in");
-
-  const guestBookings = await getBookings(session.user.guestId);
-  const guestBookingIds = guestBookings.map((bookings) => bookingId);
-
-  if (!guestBookingIds.includes(bookingId))
-    throw new Error(
-      "You are not allowed to delete these bookings, fuck you.🙂"
-    );
-
-  const { error } = await supabase
-    .from("bookings")
-    .delete()
-    .eq("id", bookingId);
-
-  if (error) throw new Error("Booking could not be deleted");
-  revalidatePath("/account/reservations");
+export async function signInAction() {
+  await signIn("google", { redirectTo: "/account" }); //Was signing In but wasn't redirecting, so I had to use a client component
 }
