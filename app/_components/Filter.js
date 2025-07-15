@@ -15,13 +15,6 @@ function Filter() {
   }
   return (
     <div className="border border-primary-800 flex">
-      {/* <button
-        className="px-5 py-2 hover:bg-primary-700"
-        onClick={() => handleFilter("large")}
-      >
-        8&mdash;12 guests
-      </button> */}
-
       <Button
         filter="all"
         handleFilter={handleFilter}
