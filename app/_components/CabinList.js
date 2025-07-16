@@ -5,7 +5,6 @@ import { unstable_noStore as noStore } from "next/cache";
 async function CabinList({ filter }) {
   //noStore(); //Works almost like revalidation in PAGE cabins
   const cabins = await getCabins();
-  //console.log("Fetched cabins:", cabins); // Check if new rows appear in logs
 
   if (!cabins.length) return null;
 
