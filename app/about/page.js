@@ -1,7 +1,6 @@
 import Image from "next/image";
 import image1 from "@/public/about-1.jpg";
-import { getCabinCount, getCabins } from "../_library/data-service";
-//import image2 from "@/public/about-1.jpg";
+import { getCabinCount } from "../_library/data-service";
 
 export const revalidate = 86400; // once per day(in seconds). We are making this page here dynamic because of data fetching catching issue
 
@@ -9,8 +8,6 @@ export const metadata = {
   title: "About",
 };
 export default async function Page() {
-  //const cabins = await getCabins();
-  //const numCabins = cabins.length;
   const numCabins = await getCabinCount();
   return (
     <div className="grid grid-cols-5 gap-x-24 gap-y-32 text-lg items-center">
