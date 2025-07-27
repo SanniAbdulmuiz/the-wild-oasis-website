@@ -9,7 +9,7 @@ export default function Page() {
         src={bg}
         fill
         className="object-cover object-top"
-        placeholder="blur" //Only works with images that are statically imported
+        placeholder="blur" //Only works with images that are statically imported. See how it's done on line 3.
         quality={80}
         alt="Mountains and forests with two cabins"
       />
