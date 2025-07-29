@@ -7,33 +7,25 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 export default function Nav({ session }) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const closeSidebar = () => setIsOpen(false);
+
   return (
     <nav className="z-10 text-base sm:text-xl p-4 relative">
-      {/* Toggle button - visible only on small screens */}
+      {/* Mobile Toggle Button */}
       <div className="sm:hidden flex justify-end">
-        <button
-          onClick={() => setIsOpen((prev) => !prev)}
-          aria-label="Toggle menu"
-        >
-          {isOpen ? (
-            <XMarkIcon className="h-6 w-6 text-gray-800" />
-          ) : (
-            <Bars3Icon className="h-6 w-6 text-gray-800" />
-          )}
-        </button>
+        {!isOpen && (
+          <button onClick={() => setIsOpen(true)} aria-label="Open menu">
+            <Bars3Icon className="h-8 w-8" />
+          </button>
+        )}
       </div>
-      <ul
-        className={`
-          ${isOpen ? "block" : "hidden"} 
-          sm:flex sm:gap-16 gap-8 items-center
-          sm:static absolute top-12 left-0 w-full bg-white sm:bg-transparent sm:w-auto sm:top-0 sm:left-0 sm:py-0 py-4 px-4
-          transition-all z-20
-        `}
-      >
+
+      {/* Desktop Navigation */}
+      <ul className="hidden sm:flex sm:gap-16 gap-8 items-center">
         <li>
           <Link
             href="/cabins"
-            className="block hover:text-accent-400 transition-colors py-2"
+            className="hover:text-accent-400 transition-colors"
           >
             Cabins
           </Link>
@@ -41,7 +33,7 @@ export default function Nav({ session }) {
         <li>
           <Link
             href="/about"
-            className="block hover:text-accent-400 transition-colors py-2"
+            className="hover:text-accent-400 transition-colors"
           >
             About
           </Link>
@@ -50,7 +42,7 @@ export default function Nav({ session }) {
           {session?.user?.image ? (
             <Link
               href="/account"
-              className="flex items-center gap-4 hover:text-accent-400 transition-colors py-2"
+              className="flex items-center gap-4 hover:text-accent-400 transition-colors"
             >
               <img
                 className="h-8 rounded-full"
@@ -63,13 +55,80 @@ export default function Nav({ session }) {
           ) : (
             <Link
               href="/account"
-              className="block hover:text-accent-400 transition-colors py-2"
+              className="hover:text-accent-400 transition-colors"
             >
               Guest area
             </Link>
           )}
         </li>
       </ul>
+
+      {/* Mobile Sidebar & Overlay */}
+      {isOpen && (
+        <div className="fixed inset-0 z-[1000] sm:hidden">
+          {/* Overlay */}
+          <div
+            className="absolute inset-0 bg-black bg-opacity-50"
+            onClick={closeSidebar}
+          />
+
+          {/* Sidebar */}
+          <div
+            className={`
+              absolute top-0 right-0 h-full w-80 max-w-[250px]
+              bg-gray-900 text-white z-[1000]
+ shadow-2xl p-8 flex flex-col gap-6 overflow-y-auto
+              transition-transform duration-300 transform
+            `}
+          >
+            <button
+              onClick={closeSidebar}
+              aria-label="Close menu"
+              className="self-end mb-4"
+            >
+              <XMarkIcon className="h-6 w-6" />
+            </button>
+
+            <Link
+              href="/cabins"
+              onClick={closeSidebar}
+              className="hover:text-accent-400 transition-colors"
+            >
+              Cabins
+            </Link>
+            <Link
+              href="/about"
+              onClick={closeSidebar}
+              className="hover:text-accent-400 transition-colors"
+            >
+              About
+            </Link>
+            {session?.user?.image ? (
+              <Link
+                href="/account"
+                onClick={closeSidebar}
+                className="flex items-center gap-4 hover:text-accent-400 transition-colors"
+              >
+                <img
+                  className="h-8 rounded-full"
+                  src={session.user.image}
+                  alt={session.user.name}
+                  referrerPolicy="no-referrer"
+                />
+                <span>Guest area</span>
+              </Link>
+            ) : (
+              <Link
+                href="/account"
+                onClick={closeSidebar}
+                className="hover:text-accent-400 transition-colors"
+              >
+                Guest area
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
