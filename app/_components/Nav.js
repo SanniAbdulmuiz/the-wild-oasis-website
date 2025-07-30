@@ -75,9 +75,8 @@ export default function Nav({ session }) {
           {/* Sidebar */}
           <div
             className={`
-              absolute top-0 right-0 h-full w-80 max-w-[250px]
-              bg-gray-900 text-white z-[1000]
- shadow-2xl p-8 flex flex-col gap-6 overflow-y-auto
+              absolute top-0 right-0 h-full w-80 max-w-[220px]
+              bg-gray-900 text-white z-[1000] shadow-2xl p-8 flex flex-col gap-6 overflow-y-auto
               transition-transform duration-300 transform
             `}
           >

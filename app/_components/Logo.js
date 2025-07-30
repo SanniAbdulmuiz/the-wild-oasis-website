@@ -14,7 +14,7 @@ function Logo() {
         alt="The Wild Oasis logo"
         className="sm:h-[60px] sm:w-[60px]"
       />
-      <span className="text-base md:text-xl font-semibold text-primary-100">
+      <span className="text-base sm:text-xl font-semibold text-primary-100">
         The Wild Oasis
       </span>
     </Link>
