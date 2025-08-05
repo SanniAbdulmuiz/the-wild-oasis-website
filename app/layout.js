@@ -20,7 +20,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  //ReservationProvider fron ReservationContext, we are trying to make usecontest accessible in the whole application
+  //ReservationProvider fron ReservationContext, we are trying to make usecontest accessible to the whole application
   return (
     <html lang="en">
       <body
