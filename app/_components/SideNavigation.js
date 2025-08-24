@@ -81,7 +81,7 @@ function SideNavigation() {
               </li>
             ))}
 
-            <li className="px-5 pb-5 sm:mt-auto">
+            <li className="sm:px-5 pb-5 sm:mt-auto">
               <SignOutButton />
             </li>
           </ul>
